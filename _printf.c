@@ -1,59 +1,88 @@
 #include "main.h"
 #include <stdarg.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+/**
+ * printIdentifiers - prints special characters
+ * @next: character after the %
+ * @arg: argument for the identifier
+ * Return: number of characters printed
+ * (excluding the null byte used to end ouput to strings)
+ */
+ 
+int printIdentifiers(char next, va_list arg)
+{
+	int functsIndex;
+
+	identifierStruct functs[] = {
+		{"c", print_char},
+		{"s", print_str},
+		{"d", print_int},
+		{"i", print_int},
+		{"u", print_unsigned},
+		{"b", print_unsignedtoBinary},
+		{"o", print_oct},
+		{"x", print_hex},
+		{"X", print_HEX},
+		{"S", print_STR},
+		{NULL, NULL}
+	};
+
+	for (functsIndex = 0; functs[functsIndex].identifier != NULL; functsIndex++)
+	{
+		if (functs[functsIndex].identifier[0] == next)
+			return (functs[functsIndex].printer(arg));
+	}
+	return (0);
+}
+
+
+
+
 /**
  * _printf - produces output according to a format
  * @format: character string composed of zero or more directives
  * 
  * Return: the number of characters printed
  * (excluding the null byte used to end output to strings)
+ * return -1 for incomplete identifier error
  */
+
 int _printf(const char *format, ...)
 {
-	int state, length;
+	unsigned int i;
+	int indentifierPrinted = 0, charPrinted = 0;
+	va_list arg;
 
-	va_list list;
-	va_start(list, format);
-	
-	state = 0;
-	length = 0;
+	va_start(arg, format);
+	if (format == NULL)
+		return (-1);
 
-	while(*format)
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (state == 0)
+		if (format[i] != '%')
 		{
-			if (*format == '%')
-				state = 1;
-			else
-			{
-				_putchar(*format);
-				length++;
-			}
+			_putchar(format[i]);
+			charPrinted++;
+			i++;
+			continue;
+		}
+		if (format[i + 1] == '\0')
+			return (-1);
 
-		}
-		else if (state == 1)
+		identifierPrinted = printIdentifiers(format[i + 1], arg);
+		if (identifierPrinted == -1 || identifierPrinted != 0)
+			i++;
+		if (identifierPrinted > 0)
+			charPrinted += identifierPrinted;
+
+		if (identifierPrinted == 0)
 		{
-			switch(*format)
-			{
-				case 'c':
-					print_char(list);
-					length++;
-					break;
-				case 's':
-					print_str(list);
-					length = length + print_str(list);
-					break;
-				case '%':
-					_putchar('%');
-					length++;
-					break;
-				default:
-					break;
-			}
-			state = 0;
+			_putchar('%');
+			charPrinted++;
 		}
-		format++;
 	}
-	va_end(list);
-	return (length);
-
+	va_end(arg);
+	return (charPrinted);
 }
