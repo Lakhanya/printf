@@ -21,7 +21,7 @@ int printIdentifiers(char next, va_list arg)
 		{"d", print_int},
 		{"i", print_int},
 		{"u", print_unsigned},
-		{"b", print_unsignedtoBinary},
+		{"b", print_unsignedToBinary},
 		{"o", print_oct},
 		{"x", print_hex},
 		{"X", print_HEX},
@@ -52,7 +52,7 @@ int printIdentifiers(char next, va_list arg)
 int _printf(const char *format, ...)
 {
 	unsigned int i;
-	int indentifierPrinted = 0, charPrinted = 0;
+	int identifierPrinted = 0, charPrinted = 0;
 	va_list arg;
 
 	va_start(arg, format);

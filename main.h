@@ -18,6 +18,7 @@ int print_hex(va_list arg);
 int print_HEX(va_list arg);
 int print_STR (va_list arg);
 int print_int(va_list arg);
+int print_unsigned(va_list arg);
 
 /**
  * identifierStruct - structure definition of a printTypeStruct
