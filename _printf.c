@@ -10,7 +10,7 @@
  * Return: number of characters printed
  * (excluding the null byte used to end ouput to strings)
  */
- 
+
 int printIdentifiers(char next, va_list arg)
 {
 	int functsIndex;
@@ -18,14 +18,6 @@ int printIdentifiers(char next, va_list arg)
 	identifierStruct functs[] = {
 		{"c", print_char},
 		{"s", print_str},
-		/*{"d", print_int},
-		{"i", print_int},
-		{"u", print_unsigned},
-		{"b", print_unsignedToBinary},
-		{"o", print_oct},
-		{"x", print_hex},
-		{"X", print_HEX},
-		{"S", print_STR},*/
 		{NULL, NULL}
 	};
 
@@ -43,12 +35,10 @@ int printIdentifiers(char next, va_list arg)
 /**
  * _printf - produces output according to a format
  * @format: character string composed of zero or more directives
- * 
  * Return: the number of characters printed
  * (excluding the null byte used to end output to strings)
  * return -1 for incomplete identifier error
  */
-
 int _printf(const char *format, ...)
 {
 	unsigned int i;
@@ -65,6 +55,12 @@ int _printf(const char *format, ...)
 		{
 			_putchar(format[i]);
 			charPrinted++;
+			continue;
+		}
+		if (format[i + 1] == '%')
+		{
+			_putchar('%');
+			charPrinted++;
 			i++;
 			continue;
 		}
@@ -76,7 +72,6 @@ int _printf(const char *format, ...)
 			i++;
 		if (identifierPrinted > 0)
 			charPrinted += identifierPrinted;
-
 		if (identifierPrinted == 0)
 		{
 			_putchar('%');
